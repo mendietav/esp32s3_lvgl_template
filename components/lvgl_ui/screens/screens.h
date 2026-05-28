@@ -11,8 +11,8 @@
  */
 typedef enum {
     SCREEN_MAIN = 0,
-    /* SCREEN_SETTINGS, */
-    /* SCREEN_ERROR,    */
+    SCREEN_SPLASH,
+    SCREEN_HOME,
     SCREEN_MAX
 } ui_screens_t;
 
