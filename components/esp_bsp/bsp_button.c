@@ -9,13 +9,13 @@ static const char *TAG = "bsp_button";
 #define BOOT_BUTTON_GPIO    0
 
 static button_handle_t s_btn_handle = NULL;
-static volatile bool   s_pressed    = false;
+static volatile int    s_pressed    = 0;
 
 static void button_press_cb(void *arg, void *data)
 {
     (void)arg;
     (void)data;
-    s_pressed = true;
+    s_pressed = 1;
     ESP_LOGD(TAG, "BOOT pressed");
 }
 
@@ -39,7 +39,8 @@ void bsp_button_init(void)
 bool bsp_button_was_pressed(void)
 {
     if (s_pressed) {
-        s_pressed = false;
+        s_pressed = 0;
+        ESP_LOGI(TAG, "button press detected");
         return true;
     }
     return false;

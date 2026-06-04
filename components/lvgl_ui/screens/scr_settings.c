@@ -86,9 +86,9 @@ void scr_settings_uninit(void)
 void scr_settings_step(void)
 {
     if (bsp_button_was_pressed()) {
-        ESP_LOGI(TAG, "button -> reset brightness");
         bsp_display_set_brightness(100);
         lv_slider_set_value(s_slider, 100, LV_ANIM_OFF);
         lv_label_set_text(s_lbl_brightness, "Brillo: 100%");
+        ESP_LOGI(TAG, "button -> brightness reset to 100%%");
     }
 }

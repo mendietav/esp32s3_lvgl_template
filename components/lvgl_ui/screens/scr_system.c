@@ -118,8 +118,8 @@ void scr_system_uninit(void)
 void scr_system_step(void)
 {
     if (bsp_button_was_pressed()) {
-        ESP_LOGI(TAG, "button -> reset heap min");
         s_heap_min = esp_get_free_heap_size();
         update_all();
+        ESP_LOGI(TAG, "button -> heap min reset to %lu", s_heap_min);
     }
 }
