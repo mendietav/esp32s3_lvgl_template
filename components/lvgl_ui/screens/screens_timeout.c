@@ -32,7 +32,6 @@ void disp_timeout_step(void)
     uint32_t inactive_ms = lv_disp_get_inactive_time(lv_disp_get_default());
 
     if (!s_display_on) {
-        /* Any new activity wakes the display */
         if (inactive_ms < 100) {
             s_display_on = true;
             bsp_display_set_brightness(100);
@@ -41,7 +40,6 @@ void disp_timeout_step(void)
         return;
     }
 
-    /* Display-off timeout */
     if (s_timeout_to_off_ms != TIMEOUT_NEVER && inactive_ms >= s_timeout_to_off_ms) {
         s_display_on = false;
         bsp_display_set_brightness(0);
@@ -49,11 +47,10 @@ void disp_timeout_step(void)
         return;
     }
 
-    /* Return-to-main timeout (ignored while already on the main screen) */
     if (s_timeout_to_main_ms != TIMEOUT_NEVER &&
         inactive_ms >= s_timeout_to_main_ms &&
-        ui_screens_get_current() != SCREEN_MAIN) {
-        ESP_LOGD(TAG, "timeout → main");
-        ui_screens_navigate(SCREEN_MAIN);
+        ui_screens_get_current() != SCREEN_HOME) {
+        ESP_LOGD(TAG, "timeout → home");
+        ui_screens_navigate(SCREEN_HOME);
     }
 }

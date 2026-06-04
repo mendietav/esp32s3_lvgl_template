@@ -1,29 +1,19 @@
 #include "screens.h"
-#include "scr_main.h"
-#include "ui.h"             /* Squareline export — screen object declarations */
+#include "scr_home.h"
+#include "scr_system.h"
+#include "scr_settings.h"
+#include "ui.h"
 #include "esp_log.h"
 
 static const char *TAG = "screens";
 
-/**
- * Screen registry.
- *
- * When you add a screen in Squareline Studio:
- *   1. Add its value to ui_screens_t in screens.h.
- *   2. Create scr_<name>.c/h in this directory.
- *   3. Add an entry below mapping the enum to the Squareline lv_obj_t* and
- *      your controller callbacks.
- *
- * The .screen_obj field must point to the extern lv_obj_t* variable that
- * Squareline declares in its generated header (e.g. &ui_Screen1).
- */
 static const screen_config_t screen_configs[SCREEN_MAX] = {
-    // [SCREEN_MAIN] = SCREEN_REGISTER("Main", ui_scrMain, main)
+    [SCREEN_HOME]     = SCREEN_REGISTER("Home",     ui_scrHome,     home),
+    [SCREEN_SYSTEM]   = SCREEN_REGISTER("System",   ui_scrSystem,   system),
+    [SCREEN_SETTINGS] = SCREEN_REGISTER("Settings", ui_scrSettings, settings),
 };
 
-static ui_screens_t s_active_screen = SCREEN_MAX; /* SCREEN_MAX = "unknown" */
-
-/* ------------------------------------------------------------------ */
+static ui_screens_t s_active_screen = SCREEN_MAX;
 
 void ui_screens_prepare(void)
 {
@@ -63,7 +53,6 @@ void ui_screens_step(void)
 {
     ui_screens_t current = ui_screens_get_current();
 
-    /* Detect screen transition */
     if (current != s_active_screen) {
         if (s_active_screen < SCREEN_MAX && screen_configs[s_active_screen].uninit) {
             screen_configs[s_active_screen].uninit();
@@ -77,7 +66,6 @@ void ui_screens_step(void)
         s_active_screen = current;
     }
 
-    /* Drive active screen */
     if (current < SCREEN_MAX && screen_configs[current].step) {
         screen_configs[current].step();
     }
