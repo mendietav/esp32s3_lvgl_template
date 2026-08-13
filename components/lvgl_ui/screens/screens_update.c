@@ -1,4 +1,6 @@
 #include "screens_update.h"
+#include "scr_meter.h"
+#include "scr_chart.h"
 #include "lvgl.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
@@ -13,25 +15,21 @@ typedef struct {
     void           *data;
 } ui_cmd_msg_t;
 
-static QueueHandle_t s_queue = NULL;
-
-/* ------------------------------------------------------------------ */
-/* Handler table — one static function per ui_update_cmd_t value.
- * Add new handlers here and register them in s_handlers[].           */
-/* ------------------------------------------------------------------ */
-
 typedef void (*handler_fn_t)(void *data);
 
-/* Placeholder — remove when UI_UPDATE_MAX has real commands */
-#if UI_UPDATE_MAX == 0
-static const handler_fn_t s_handlers[] = { NULL };
-#else
-static const handler_fn_t s_handlers[UI_UPDATE_MAX] = {
-    /* [UI_UPDATE_TEMPERATURE] = handle_temperature, */
-};
-#endif
+static QueueHandle_t s_queue = NULL;
 
-/* ------------------------------------------------------------------ */
+static void handle_temperatura(void *data)
+{
+    int32_t centesimas = (int32_t)(uintptr_t)data;
+    float celsius = centesimas / 100.0f;
+    scr_meter_update_temp(celsius);
+    scr_chart_add_point(celsius);
+}
+
+static const handler_fn_t s_handlers[UI_UPDATE_MAX] = {
+    [UI_UPDATE_TEMPERATURA] = handle_temperatura,
+};
 
 void ui_update_init(void)
 {

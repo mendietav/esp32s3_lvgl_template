@@ -16,9 +16,7 @@
  *   3. Register it in the s_handlers[] table.
  */
 typedef enum {
-    /* Add application-specific commands here, e.g.: */
-    /* UI_UPDATE_TEMPERATURE, */
-    /* UI_UPDATE_CONNECTION,  */
+    UI_UPDATE_TEMPERATURA,
     UI_UPDATE_MAX
 } ui_update_cmd_t;
 

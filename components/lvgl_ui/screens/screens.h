@@ -10,9 +10,10 @@
  * in the order you want them registered. Keep SCREEN_MAX last.
  */
 typedef enum {
-    SCREEN_MAIN = 0,
-    /* SCREEN_SETTINGS, */
-    /* SCREEN_ERROR,    */
+    SCREEN_METER = 0,
+    SCREEN_CHART,
+    SCREEN_HISTORY,
+    SCREEN_SETTINGS,
     SCREEN_MAX
 } ui_screens_t;
 
