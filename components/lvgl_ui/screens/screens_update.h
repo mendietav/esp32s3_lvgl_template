@@ -15,10 +15,17 @@
  *   2. Add a static handler function in screens_update.c.
  *   3. Register it in the s_handlers[] table.
  */
+
+/* WiFi connection state sent to the UI */
 typedef enum {
-    /* Add application-specific commands here, e.g.: */
-    /* UI_UPDATE_TEMPERATURE, */
-    /* UI_UPDATE_CONNECTION,  */
+    UI_WIFI_CONNECTING,
+    UI_WIFI_CONNECTED,
+    UI_WIFI_FAILED,
+} ui_wifi_state_t;
+
+typedef enum {
+    UI_UPDATE_WIFI_STATE,   /* data: (void *)(uintptr_t) ui_wifi_state_t */
+    UI_UPDATE_RSSI,         /* data: (void *)(intptr_t) RSSI in dBm      */
     UI_UPDATE_MAX
 } ui_update_cmd_t;
 

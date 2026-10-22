@@ -22,14 +22,23 @@ static QueueHandle_t s_queue = NULL;
 
 typedef void (*handler_fn_t)(void *data);
 
-/* Placeholder — remove when UI_UPDATE_MAX has real commands */
-#if UI_UPDATE_MAX == 0
-static const handler_fn_t s_handlers[] = { NULL };
-#else
+/* Temporary handlers: they only log. The screens will hook in later. */
+static void handle_wifi_state(void *data)
+{
+    ui_wifi_state_t state = (ui_wifi_state_t)(uintptr_t)data;
+    ESP_LOGI(TAG, "wifi state -> %d", (int)state);
+}
+
+static void handle_rssi(void *data)
+{
+    int rssi = (int)(intptr_t)data;
+    ESP_LOGI(TAG, "rssi = %d dBm", rssi);
+}
+
 static const handler_fn_t s_handlers[UI_UPDATE_MAX] = {
-    /* [UI_UPDATE_TEMPERATURE] = handle_temperature, */
+    [UI_UPDATE_WIFI_STATE] = handle_wifi_state,
+    [UI_UPDATE_RSSI]       = handle_rssi,
 };
-#endif
 
 /* ------------------------------------------------------------------ */
 
